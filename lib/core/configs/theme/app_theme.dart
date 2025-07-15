@@ -8,7 +8,7 @@ class AppTheme {
     brightness: Brightness.dark,
     fontFamily: 'CircularStd',
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.primary,
       contentTextStyle: TextStyle(color: Colors.white),
     ),
     inputDecorationTheme: InputDecorationTheme(

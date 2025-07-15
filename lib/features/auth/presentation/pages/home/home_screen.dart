@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:login_signup_app/core/configs/widget/button/my_button.dart';
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_state.dart';
 
@@ -51,7 +52,9 @@ class HomeScreen extends StatelessWidget {
                   child: Center(child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Connecté en tant que', style: TextStyle(
+                      SvgPicture.asset('assets/vectors/email_sending.svg'),
+                      const SizedBox(height: 20),
+                      Text('Connecté en tant que ', style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,
                       ),
@@ -63,11 +66,11 @@ class HomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       MyButton(
+                        icon: Icon(Icons.logout_outlined),
                         onPressed: () {
                           context.read<AuthBloc>().add(SignOutRequested());
                         },
-                        text: 'Deconnexion',
-
+                        text: 'Se deconnecter',
                       )
                     ],
                   )
@@ -77,7 +80,5 @@ class HomeScreen extends StatelessWidget {
           );
         }
     );
-
-
   }
 }

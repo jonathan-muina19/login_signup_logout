@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/login.dart';
 
 import '../../../../../core/configs/widget/button/my_button.dart';
 import '../../../../../core/configs/widget/textfield/my_textfield.dart';
+import '../../bloc/auth/auth_bloc.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -68,6 +71,7 @@ Widget _signupText(BuildContext context) {
           recognizer:
               TapGestureRecognizer()
                 ..onTap = () {
+                  context.read<AuthBloc>().add(ResetAuthEvent());
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => LoginScreen()),
                   );

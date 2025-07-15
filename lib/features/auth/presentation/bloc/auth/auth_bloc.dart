@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_signup_app/features/auth/domain/auth_repository.dart';
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_event.dart';
@@ -15,13 +16,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     /// émet un AuthSuccess.
     /// Si la méthode signIn échoue,
     /// émet un AuthFailure avec le message d'erreur.
+
+    on<ResetAuthEvent>((event, emit){
+      emit(AuthInitial());
+    });
+
+
     on<SignInRequested>((event, emit) async {
       emit(AuthLoading());
       try {
         await authRepository.signIn(event.email, event.password);
         emit(AuthSuccess());
+
+      } on FirebaseException catch (e) {
+        String message ;
+        switch (e.code){
+          case 'user-not-found':
+            message = 'Utilisateur non trouvé';
+            break;
+          case 'wrong-password':
+            message = 'Mot de passe incorrect';
+            break;
+          case 'invalid-email':
+            message = 'Email invalide';
+            break;
+          case 'invalid-credential':
+            message = 'Email ou mot de passe incorrect!';
+            break;
+          default:
+            message = 'Pas de connexion internet,\neesayez plus tard';
+        }
+        emit(AuthFailure(message));
       } catch (e) {
-        emit(AuthFailure(e.toString()));
+        emit(AuthFailure('Un probleme est survenu , essayez plus tard'));
       }
     });
 
@@ -46,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutRequested>((event, emit) async {
       emit(AuthLoading());
       await authRepository.signOut();
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 1));
       emit(AuthInitial());
     });
 
@@ -73,3 +100,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 }
+
+

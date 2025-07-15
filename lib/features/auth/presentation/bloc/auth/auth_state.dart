@@ -18,9 +18,10 @@ class AuthSuccess extends AuthState {}
 /// Evenement de type échec
 class AuthFailure extends AuthState {
   final String message;
-
   AuthFailure(this.message);
 
   @override
   List<Object?> get props => [message];
 }
+
+

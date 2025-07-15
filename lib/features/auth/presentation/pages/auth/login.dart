@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_signup_app/core/configs/theme/app_color.dart';
 import 'package:login_signup_app/core/configs/widget/button/my_button.dart';
 import 'package:login_signup_app/core/configs/widget/textfield/my_textfield.dart';
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/signup.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/home/home_screen.dart';
-
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_state.dart';
 
@@ -53,8 +53,55 @@ class LoginScreen extends StatelessWidget {
             if (state is AuthFailure) {
               ScaffoldMessenger.of(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+              ).showSnackBar(SnackBar(
+                content: SingleChildScrollView(
+                  child: Container(
+                    height: 70,
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.info_rounded),
+                        const SizedBox(width: 20),
+                        Text(state.message, style: TextStyle(
+                          fontWeight: FontWeight.bold
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                elevation: 20,
+                backgroundColor: AppColors.background,
+              ));
             } else if (state is AuthSuccess) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(
+                content: Container(
+                  height: 70,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle, color: Colors.white, size: 30),
+                      const SizedBox(width: 20),
+                      Text('Connexion reussie !', style: TextStyle(
+                        fontWeight: FontWeight.bold
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                elevation: 20,
+                backgroundColor: AppColors.background,
+              ));
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => const HomeScreen()),
               );
@@ -71,12 +118,14 @@ class LoginScreen extends StatelessWidget {
                     _loginTitle(context),
                     const SizedBox(height: 20),
                     MyTextfield(
+                      prefixIcon: Icon(Icons.email),
                       hintText: 'Email',
                       controller: emailController,
                       validator: emailValidator,
                     ),
                     const SizedBox(height: 15),
                     MyTextfield(
+                      prefixIcon: Icon(Icons.lock),
                       hintText: 'Mot de passe',
                       controller: passwordController,
                       validator: passwordValidator,

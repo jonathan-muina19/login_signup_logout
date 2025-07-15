@@ -5,6 +5,7 @@ class MyTextfield extends StatelessWidget {
   final TextEditingController controller;
   final bool obscureText;
   final String? Function(String?)? validator;
+  final Widget? prefixIcon;
 
   const MyTextfield({
     super.key,
@@ -12,13 +13,17 @@ class MyTextfield extends StatelessWidget {
     required this.controller,
     this.obscureText = false,
     this.validator,
+    this.prefixIcon
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(hintText: hintText),
+      decoration: InputDecoration(
+          hintText: hintText,
+        prefixIcon: prefixIcon
+      ),
       obscureText: obscureText,
       validator: validator,
     );
