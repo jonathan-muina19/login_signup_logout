@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
     /// Email de l'utilisateur
     final email = user?.email ?? 'Compte ou Email non disponible';
 
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state){
         if(state is AuthFailure  || state is AuthInitial){
           Navigator.of(context).pushAndRemoveUntil(
@@ -29,37 +29,53 @@ class HomeScreen extends StatelessWidget {
           );
         }
       },
-      child:Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
-              child: Center(child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Connecté en tant que', style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  ),
-                  Text('$email', style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.normal
-                  ),
-                  ),
-                  const SizedBox(height: 20),
-                  MyButton(
-                    onPressed: (){
-                      context.read<AuthBloc>().add(SignOutRequested());
-                    },
-                    text: 'Deconnexion',
-
-                  )
-                ],
-              )
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return const Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Déconnexion en cours...'),
+                    CircularProgressIndicator(),
+                  ],
+                ),
               ),
-            ),
-          )
-      )
+            );
+          }
+          return Scaffold(
+              body: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 60),
+                  child: Center(child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Connecté en tant que', style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      ),
+                      Text('$email', style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.normal
+                      ),
+                      ),
+                      const SizedBox(height: 20),
+                      MyButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(SignOutRequested());
+                        },
+                        text: 'Deconnexion',
+
+                      )
+                    ],
+                  )
+                  ),
+                ),
+              )
+          );
+        }
     );
 
 

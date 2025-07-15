@@ -44,8 +44,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     /// émet un AuthFailure avec le message d'erreur.
 
     on<SignOutRequested>((event, emit) async {
-      //emit(AuthLoading());
+      emit(AuthLoading());
       await authRepository.signOut();
+      await Future.delayed(const Duration(seconds: 2));
       emit(AuthInitial());
     });
 
