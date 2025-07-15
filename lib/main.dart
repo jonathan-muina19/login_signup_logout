@@ -18,7 +18,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (_) => AuthBloc(authRepository),
+          create: (context) => AuthBloc(authRepository),
         ),
       ],
       child: const MyApp(),
