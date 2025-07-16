@@ -68,9 +68,19 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Icon(Icons.error),
                         const SizedBox(width: 20),
-                        Text(state.message, style: TextStyle(
-                          fontWeight: FontWeight.bold
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Erreur !', style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                              ),
+                            ),
+                            Text(state.message, style: TextStyle(
+                              fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
@@ -94,9 +104,19 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       Icon(Icons.check_circle, color: Colors.white, size: 30),
                       const SizedBox(width: 20),
-                      Text('Connexion reussie !', style: TextStyle(
-                        fontWeight: FontWeight.bold
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Succes', style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                            ),
+                          ),
+                          Text('Connexion reussie !', style: TextStyle(
+                            fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
                       )
                     ],
                   ),

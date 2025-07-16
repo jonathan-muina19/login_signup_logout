@@ -17,6 +17,8 @@ class SignupPage extends StatelessWidget {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController againPasswordController = TextEditingController();
+    final TextEditingController nameController = TextEditingController();
+    final TextEditingController firstNameController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
 
     /// validator pour adresse email
@@ -72,6 +74,18 @@ class SignupPage extends StatelessWidget {
                 children: [
                   _loginTitle(context),
                   const SizedBox(height: 20),
+                  MyTextfield(
+                    prefixIcon: Icon(Icons.person),
+                    hintText: 'Nom',
+                    controller: nameController
+                  ),
+                  const SizedBox(height: 15),
+                  MyTextfield(
+                      prefixIcon: Icon(Icons.person),
+                      hintText: 'Prenom',
+                      controller: firstNameController
+                  ),
+                  const SizedBox(height: 15),
                   MyTextfield(
                       prefixIcon: Icon(Icons.email),
                       hintText: 'Email',
