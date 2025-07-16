@@ -44,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             message = 'Email ou mot de passe incorrect!';
             break;
           default:
-            message = 'Pas de connexion internet,\neesayez plus tard';
+            message = 'Pas de connexion internet,\nessayez plus tard';
         }
         emit(AuthFailure(message));
       } catch (e) {

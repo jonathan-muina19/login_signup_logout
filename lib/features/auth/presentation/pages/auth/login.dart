@@ -35,6 +35,7 @@ class LoginScreen extends StatelessWidget {
       } else if (!value.contains('@')) {
         return 'Email invalide';
       }
+      return null;
     }
 
     /// Validator pour le mot de passe
@@ -44,6 +45,7 @@ class LoginScreen extends StatelessWidget {
       } else if (value.length <= 8) {
         return 'Mot de passe trop faible';
       }
+      return null;
     }
 
     return Scaffold(
@@ -64,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.info_rounded),
+                        Icon(Icons.error),
                         const SizedBox(width: 20),
                         Text(state.message, style: TextStyle(
                           fontWeight: FontWeight.bold

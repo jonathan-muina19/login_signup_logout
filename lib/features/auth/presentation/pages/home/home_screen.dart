@@ -19,6 +19,9 @@ class HomeScreen extends StatelessWidget {
     /// Email de l'utilisateur
     final email = user?.email ?? 'Compte ou Email non disponible';
 
+    /// Extraction du texte avant le @
+    final username = email.contains('@') ? email.split('@')[0] : email;
+
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state){
         if(state is AuthFailure  || state is AuthInitial){
@@ -54,6 +57,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       SvgPicture.asset('assets/vectors/email_sending.svg'),
                       const SizedBox(height: 20),
+                      Text('Bienvenue : $username'),
                       Text('Connecté en tant que ', style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w500,

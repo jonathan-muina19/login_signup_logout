@@ -16,35 +16,92 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final TextEditingController againPasswordController =
-        TextEditingController();
+    final TextEditingController againPasswordController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
+    /// validator pour adresse email
+    String? emailValidator(String? value) {
+      if (value == null || value.isEmpty) {
+        return 'Veuillez entrer votre email';
+      } else if (!value.contains('@')) {
+        return 'Email invalide';
+      }
+      return null;
+    }
+
+    /// validator pour le mot de passe
+    String? passwordValidator(String? value) {
+      if (value == null || value.isEmpty) {
+        return 'Veuillez entrer votre mot de passe';
+      } else if (value.length <= 8) {
+        return 'Mot de passe trop faible';
+      }
+      return null;
+    }
+
+    /// validator pour confirmer le mot de passe
+    String? confirmPassword(String? value){
+      if (value == null || value.isEmpty) {
+        return 'Veuillez confirmer votre mot de passe';
+      } else if (value.length <= 8) {
+        return 'Mot de passe trop faible';
+      }
+      else if(value.trim() != passwordController.text.trim()){
+        return 'Les mots de passe ne correspondent pas';
+      }
+      return null;
+    }
+
+    void _signUp(){
+      if(_formKey.currentState!.validate()){
+        final email = emailController.text.trim();
+        final password = passwordController.text.trim();
+        //context.read<AuthBloc>().add(SignUpRequested(email, password));
+      }
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _loginTitle(context),
-                const SizedBox(height: 20),
-                MyTextfield(hintText: 'Email', controller: emailController),
-                const SizedBox(height: 15),
-                MyTextfield(
-                  hintText: 'Mot de passe',
-                  controller: passwordController,
-                ),
-                const SizedBox(height: 15),
-                MyTextfield(
-                  hintText: 'Confirmer le mot de passe',
-                  controller: againPasswordController,
-                ),
-                const SizedBox(height: 20),
-                MyButton(onPressed: () {}, text: 'Continuer'),
-                const SizedBox(height: 20),
-                _signupText(context),
-              ],
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _loginTitle(context),
+                  const SizedBox(height: 20),
+                  MyTextfield(
+                      prefixIcon: Icon(Icons.email),
+                      hintText: 'Email',
+                      controller: emailController,
+                    validator: emailValidator,
+                  ),
+                  const SizedBox(height: 15),
+                  MyTextfield(
+                    obscureText: true,
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: 'Mot de passe',
+                    controller: passwordController,
+                    validator: passwordValidator,
+                  ),
+                  const SizedBox(height: 15),
+                  MyTextfield(
+                    obscureText: true,
+                    prefixIcon: Icon(Icons.lock),
+                    hintText: 'Confirmer le mot de passe',
+                    controller: againPasswordController,
+                    validator: confirmPassword,
+                  ),
+                  const SizedBox(height: 20),
+                  MyButton(onPressed: () {
+                    _signUp();
+                  }, text: 'Continuer'),
+                  const SizedBox(height: 20),
+                  _signupText(context),
+                ],
+              ),
             ),
           ),
         ),
