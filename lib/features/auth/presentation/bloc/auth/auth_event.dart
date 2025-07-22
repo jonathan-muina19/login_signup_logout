@@ -41,4 +41,6 @@ class SignOutRequested extends AuthEvent {}
 /// Evenement de type vérification de l'état d'authentification
 class CheckAuthStatus extends AuthEvent {}
 
-class ResetAuthEvent extends AuthEvent{}
+class ResetAuthEvent extends AuthEvent {}
+
+

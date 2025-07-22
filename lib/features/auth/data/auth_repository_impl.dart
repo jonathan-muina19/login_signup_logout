@@ -39,6 +39,16 @@ class AuthRepositoryImpl implements AuthRepository {
     await _auth.signOut();
   }
 
+  /// Lors de l'inscription on envoie un email de
+  /// confirmation a l'utilisateur
+  @override
+  Future<void> sendEmailVerification() async {
+    final user = _auth.currentUser;
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+    }
+  }
+
   @override
   /// Vérifie si l'utilisateur est connecté
   Stream<bool> get isSignedIn =>

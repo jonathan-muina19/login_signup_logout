@@ -5,14 +5,14 @@ class MyButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final String text;
-  final Widget ?icon;
+  final Widget? icon;
 
   const MyButton({
     super.key,
     required this.onPressed,
     this.isLoading = false,
     this.text = 'Se connecter',
-    this.icon
+    this.icon,
   });
 
   @override
@@ -28,7 +28,7 @@ class MyButton extends StatelessWidget {
         ),
         child:
             /// Si isLoading est vrai, afficher un CircularProgressIndicator
-           /// Sinon, afficher le texte et l'icône
+            /// Sinon, afficher le texte et l'icône
             isLoading
                 ? const SizedBox(
                   height: 20,
@@ -48,7 +48,10 @@ class MyButton extends StatelessWidget {
                       SizedBox(width: 8),
                       Text(
                         text,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
                     ],
                   ),

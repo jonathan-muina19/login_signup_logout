@@ -15,6 +15,9 @@ class AuthLoading extends AuthState {}
 /// Evenement de type succès
 class AuthSuccess extends AuthState {}
 
+/// Evenement de l'envoie de l'email de confirmation
+class EmailVerificationSent extends AuthState {}
+
 /// Evenement de type échec
 class AuthFailure extends AuthState {
   final String message;
@@ -23,5 +26,3 @@ class AuthFailure extends AuthState {
   @override
   List<Object?> get props => [message];
 }
-
-

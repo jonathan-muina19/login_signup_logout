@@ -17,20 +17,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     /// Si la méthode signIn échoue,
     /// émet un AuthFailure avec le message d'erreur.
 
-    on<ResetAuthEvent>((event, emit){
+    on<ResetAuthEvent>((event, emit) {
       emit(AuthInitial());
     });
-
 
     on<SignInRequested>((event, emit) async {
       emit(AuthLoading());
       try {
         await authRepository.signIn(event.email, event.password);
         emit(AuthSuccess());
-
       } on FirebaseException catch (e) {
-        String message ;
-        switch (e.code){
+        String message;
+        switch (e.code) {
           case 'user-not-found':
             message = 'Utilisateur non trouvé';
             break;
@@ -56,11 +54,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         await authRepository.signUp(event.email, event.password);
-        emit(AuthSuccess());
+        // Envoyer l'email de vérification ici directement après inscription.
+        await authRepository.sendEmailVerification();
+        emit(EmailVerificationSent());
+
+      } on FirebaseAuthException catch (e) {
+        String message;
+        switch (e.code) {
+          case 'email-already-in-use':
+            message = 'Cet email est déjà utilisé.';
+            break;
+          case 'invalid-email':
+            message = 'Email invalide.';
+            break;
+          case 'weak-password':
+            message = 'Mot de passe trop faible.';
+            break;
+          default:
+            message = 'Pas de connexion internet,\nessayez plus tard';
+        }
+        emit(AuthFailure(message));
       } catch (e) {
-        emit(AuthFailure(e.toString()));
+        emit(AuthFailure('Un probleme est survenu , essayez plus tard'));
       }
     });
+
 
     /// Ecoute des événements de type SignOutRequested.
     /// Si un utilisateur tente de se déconnecter,
@@ -72,8 +90,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<SignOutRequested>((event, emit) async {
       emit(AuthLoading());
-      await authRepository.signOut();
       await Future.delayed(const Duration(seconds: 1));
+      await authRepository.signOut();
       emit(AuthInitial());
     });
 
@@ -100,5 +118,3 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 }
-
-

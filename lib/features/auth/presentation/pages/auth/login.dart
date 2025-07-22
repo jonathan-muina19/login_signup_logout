@@ -53,77 +53,83 @@ class LoginScreen extends StatelessWidget {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(
-                content: SingleChildScrollView(
-                  child: Container(
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: SingleChildScrollView(
+                    child: Container(
+                      height: 70,
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.error),
+                          const SizedBox(width: 20),
+                          SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Erreur!',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  state.message,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  elevation: 20,
+                  backgroundColor: AppColors.background,
+                ),
+              );
+            } else if (state is AuthSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Container(
                     height: 70,
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(10)
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.error),
+                        Icon(Icons.check_circle, color: Colors.white, size: 30),
                         const SizedBox(width: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Erreur !', style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
+                            Text(
+                              'Succes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
                               ),
                             ),
-                            Text(state.message, style: TextStyle(
-                              fontWeight: FontWeight.bold
-                              ),
+                            Text(
+                              'Connexion reussie !',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
+                  elevation: 20,
+                  backgroundColor: AppColors.background,
                 ),
-                elevation: 20,
-                backgroundColor: AppColors.background,
-              ));
-            } else if (state is AuthSuccess) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(
-                content: Container(
-                  height: 70,
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.check_circle, color: Colors.white, size: 30),
-                      const SizedBox(width: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Succes', style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20
-                            ),
-                          ),
-                          Text('Connexion reussie !', style: TextStyle(
-                            fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                elevation: 20,
-                backgroundColor: AppColors.background,
-              ));
+              );
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => const HomeScreen()),
               );

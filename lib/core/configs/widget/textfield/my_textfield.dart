@@ -13,17 +13,14 @@ class MyTextfield extends StatelessWidget {
     required this.controller,
     this.obscureText = false,
     this.validator,
-    this.prefixIcon
+    this.prefixIcon,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(
-          hintText: hintText,
-        prefixIcon: prefixIcon
-      ),
+      decoration: InputDecoration(hintText: hintText, prefixIcon: prefixIcon),
       obscureText: obscureText,
       validator: validator,
     );

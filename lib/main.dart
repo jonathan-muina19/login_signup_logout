@@ -12,14 +12,14 @@ import 'features/auth/presentation/pages/splash/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final AuthRepository authRepository = AuthRepositoryImpl(FirebaseAuth.instance);
+  final AuthRepository authRepository = AuthRepositoryImpl(
+    FirebaseAuth.instance,
+  );
 
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc(authRepository),
-        ),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository)),
       ],
       child: const MyApp(),
     ),

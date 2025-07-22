@@ -3,6 +3,7 @@
 abstract class AuthRepository {
   Future<void> signUp(String email, String password);
   Future<void> signIn(String email, String password);
+  Future<void> sendEmailVerification();
   Future<void> signOut();
 
   /// Returns the current user's email.
