@@ -101,18 +101,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<CheckAuthStatus>((event, emit) async {
       await Future.delayed(const Duration(seconds: 2));
-
-      /// retourne la première valeur émise par le flux.
-      /// Si l'utilisateur n'est pas connecté,
-      /// émet un AuthInitial.
-      /// Si l'utilisateur est connecté,
-      /// émet un AuthSuccess.
-      /// Si une erreur se produit,
-      /// émet un AuthFailure avec le message d'erreur.
-      final isLoggedIn = await authRepository.isSignedIn.first;
       try {
+        final isLoggedIn = await authRepository.isSignedIn.first;
+
         if (isLoggedIn) {
-          emit(AuthSuccess());
+          // Vérifier si l'utilisateur a déjà envoyé un email de vérification
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null && !user.emailVerified) {
+            //
+            emit(AuthEmailNotVerified());
+          } else {
+            // L'utilisateur est connecté et l'email a déjà été vérifié
+            emit(AuthSuccess());
+          }
         } else {
           emit(AuthInitial());
         }
@@ -120,5 +121,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure(e.toString()));
       }
     });
+
   }
 }

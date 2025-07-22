@@ -8,7 +8,6 @@ import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_event
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_state.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/signup.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/home/home_screen.dart';
-
 import '../../../../../core/configs/widget/scaffoldMessenger/scaffold_messenger.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import 'email_not_verified.dart';

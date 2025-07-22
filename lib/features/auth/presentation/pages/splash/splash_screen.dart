@@ -8,6 +8,7 @@ import 'package:login_signup_app/features/auth/presentation/pages/auth/login.dar
 import '../../../../../core/configs/theme/app_color.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_state.dart';
+import '../auth/email_not_verified.dart';
 import '../home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -38,8 +39,13 @@ class _SplashScreenState extends State<SplashScreen> {
             (route) => false,
           );
         }
-
-        if (state is AuthInitial || state is AuthFailure) {
+        else if (state is AuthEmailNotVerified) {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const EmailNotVerifiedPage()),
+                (route) => false,
+          );
+        }
+        else if (state is AuthInitial || state is AuthFailure) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const LoginScreen()),
             (route) => false,

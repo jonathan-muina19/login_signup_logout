@@ -15,8 +15,12 @@ class AuthLoading extends AuthState {}
 /// Evenement de type succès
 class AuthSuccess extends AuthState {}
 
-/// Evenement de l'envoie de l'email de confirmation
+/// Evenement de type email envoyé
 class EmailVerificationSent extends AuthState {}
+
+/// Evenement de type email non vérifié
+class AuthEmailNotVerified extends AuthState {}
+
 
 /// Evenement de type échec
 class AuthFailure extends AuthState {

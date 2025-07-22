@@ -28,7 +28,10 @@ class AuthRepositoryImpl implements AuthRepository {
     /// Appel de la méthode signInWithEmailAndPassword
     /// de Firebase Authentication.
     /// Cette méthode permet de connecter un utilisateur existant.
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password
+    );
   }
 
   @override

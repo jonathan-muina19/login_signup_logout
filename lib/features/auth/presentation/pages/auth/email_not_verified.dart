@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_signup_app/core/configs/widget/button/my_button.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/signup.dart';
 
 import '../../../../../core/configs/theme/app_color.dart';
 import '../../../../../core/configs/widget/scaffoldMessenger/scaffold_messenger.dart';
+import '../../bloc/auth/auth_bloc.dart';
+import '../../bloc/auth/auth_event.dart';
 import 'login.dart';
 
 class EmailNotVerifiedPage extends StatelessWidget {
@@ -29,6 +32,30 @@ class EmailNotVerifiedPage extends StatelessWidget {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erreur lors de l\'envoi du mail : $e')),
+      );
+    }
+  }
+
+  // Fonction pour vérifier si l'email est vérifié
+  Future<void> _checkEmailVerified(BuildContext context) async {
+    await FirebaseAuth.instance.currentUser?.reload();
+    final user = FirebaseAuth.instance.currentUser;
+
+    // Vérifier si l'email a déjà été vérifié
+    if (user != null && user.emailVerified) {
+      context.read<AuthBloc>().add(CheckAuthStatus());
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: MyScaffoldMessenger(
+            title: 'Email',
+            message: 'Votre adresse e-mail n\'est pas encore vérifiée.',
+            color: Colors.orange,
+            icon: Icon(Icons.warning),
+          ),
+          backgroundColor: AppColors.background,
+          elevation: 20,
+        ),
       );
     }
   }
@@ -111,7 +138,40 @@ class EmailNotVerifiedPage extends StatelessWidget {
                       //Icon(Icons.keyboard_backspace, color: Colors.white, size: 16),
                       const SizedBox(width: 6),
                       Text(
-                        'Connexion',
+                        'Se reconnecter',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15, // Réduit aussi la taille du texte
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                height: 50,
+                width: 200, // Ajuste cette largeur selon ce que tu veux
+                child: ElevatedButton(
+                  onPressed: () {
+                    _checkEmailVerified(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    backgroundColor: Colors.red, // ta couleur si besoin
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8), // optionnel pour arrondir
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.check, color: Colors.white, size: 16),
+                      const SizedBox(width: 6),
+                      Text(
+                        'J\'ai vérifié',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
