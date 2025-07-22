@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_signup_app/core/configs/widget/scaffoldMessenger/scaffold_messenger.dart';
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_event.dart';
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_state.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/login.dart';
@@ -83,35 +84,11 @@ class SignupPage extends StatelessWidget {
         if (state is EmailVerificationSent) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Container(
-                height: 70,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.info, color: Colors.white, size: 30),
-                    const SizedBox(width: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Confirmation',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Text(
-                          'Un email de confitmation envoyer\nVerifiez votre boite mail !',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              content: MyScaffoldMessenger(
+                  title: 'Confirmation',
+                  message: 'Email de confirmation envoyer\nVerifier vos mails',
+                  color: Colors.blueAccent,
+                  icon: Icon(Icons.info_rounded)
               ),
               elevation: 20,
               backgroundColor: AppColors.background,
@@ -154,7 +131,6 @@ class SignupPage extends StatelessWidget {
                     ],
                   ),
                 ),
-
               ),
               elevation: 20,
               backgroundColor: AppColors.background,
@@ -162,7 +138,7 @@ class SignupPage extends StatelessWidget {
           );
         }
       },
-     builder: (context, state){
+      builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
             child: SafeArea(
@@ -201,12 +177,12 @@ class SignupPage extends StatelessWidget {
                         validator: confirmPassword,
                       ),
                       const SizedBox(height: 20),
-                      state is AuthLoading?
-                      const Center(child: CircularProgressIndicator()):
-                          MyButton(
-                              onPressed: (){
-                                _signUp();
-                              },
+                      state is AuthLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : MyButton(
+                            onPressed: () {
+                              _signUp();
+                            },
                             text: 'Continuer',
                           ),
                       const SizedBox(height: 20),
@@ -218,7 +194,7 @@ class SignupPage extends StatelessWidget {
             ),
           ),
         );
-     }
+      },
     );
   }
 }

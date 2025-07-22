@@ -25,7 +25,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         await authRepository.signIn(event.email, event.password);
-        emit(AuthSuccess());
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null && !user.emailVerified) {
+          emit(AuthFailure('email-not-verified'));
+          return;
+        } else {
+          emit(AuthSuccess());
+        }
       } on FirebaseException catch (e) {
         String message;
         switch (e.code) {
@@ -57,7 +63,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         // Envoyer l'email de vérification ici directement après inscription.
         await authRepository.sendEmailVerification();
         emit(EmailVerificationSent());
-
       } on FirebaseAuthException catch (e) {
         String message;
         switch (e.code) {
@@ -78,7 +83,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure('Un probleme est survenu , essayez plus tard'));
       }
     });
-
 
     /// Ecoute des événements de type SignOutRequested.
     /// Si un utilisateur tente de se déconnecter,

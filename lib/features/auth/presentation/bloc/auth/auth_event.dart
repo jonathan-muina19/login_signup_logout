@@ -42,5 +42,3 @@ class SignOutRequested extends AuthEvent {}
 class CheckAuthStatus extends AuthEvent {}
 
 class ResetAuthEvent extends AuthEvent {}
-
-

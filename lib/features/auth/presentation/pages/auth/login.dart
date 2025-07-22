@@ -5,21 +5,23 @@ import 'package:login_signup_app/core/configs/theme/app_color.dart';
 import 'package:login_signup_app/core/configs/widget/button/my_button.dart';
 import 'package:login_signup_app/core/configs/widget/textfield/my_textfield.dart';
 import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_event.dart';
+import 'package:login_signup_app/features/auth/presentation/bloc/auth/auth_state.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/signup.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/home/home_screen.dart';
+
+import '../../../../../core/configs/widget/scaffoldMessenger/scaffold_messenger.dart';
 import '../../bloc/auth/auth_bloc.dart';
-import '../../bloc/auth/auth_state.dart';
+import 'email_not_verified.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
 
-    // Verification du login
     void _login() {
       if (_formKey.currentState!.validate()) {
         final email = emailController.text.trim();
@@ -28,23 +30,16 @@ class LoginScreen extends StatelessWidget {
       }
     }
 
-    /// validator pour adresse email
     String? emailValidator(String? value) {
-      if (value == null || value.isEmpty) {
-        return 'Veuillez entrer votre email';
-      } else if (!value.contains('@')) {
-        return 'Email invalide';
-      }
+      if (value == null || value.isEmpty) return 'Veuillez entrer votre email';
+      if (!value.contains('@')) return 'Email invalide';
       return null;
     }
 
-    /// Validator pour le mot de passe
     String? passwordValidator(String? value) {
-      if (value == null || value.isEmpty) {
+      if (value == null || value.isEmpty)
         return 'Veuillez entrer votre mot de passe';
-      } else if (value.length <= 8) {
-        return 'Mot de passe trop faible';
-      }
+      if (value.length <= 8) return 'Mot de passe trop faible';
       return null;
     }
 
@@ -53,81 +48,37 @@ class LoginScreen extends StatelessWidget {
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: SingleChildScrollView(
-                    child: Container(
-                      height: 70,
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.error),
-                          const SizedBox(width: 20),
-                          SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Erreur!',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Text(
-                                  state.message,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+              if (state.message == 'email-not-verified') {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (_) => const EmailNotVerifiedPage(),
                   ),
-                  elevation: 20,
-                  backgroundColor: AppColors.background,
-                ),
-              );
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:MyScaffoldMessenger(
+                      title: 'Erreur',
+                      message: state.message,
+                      color: Colors.red,
+                      icon: Icon(Icons.error),
+                    ),
+                    backgroundColor: AppColors.background,
+                    elevation: 20,
+                  ),
+                );
+              }
             } else if (state is AuthSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Container(
-                    height: 70,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_circle, color: Colors.white, size: 30),
-                        const SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Succes',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Text(
-                              'Connexion reussie !',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  content:MyScaffoldMessenger(
+                    title: 'Succes',
+                    message: 'Connexion reussie',
+                    color: Colors.green,
+                    icon: Icon(Icons.check_circle),
                   ),
-                  elevation: 20,
                   backgroundColor: AppColors.background,
+                  elevation: 20,
                 ),
               );
               Navigator.of(context).pushReplacement(
@@ -143,17 +94,23 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _loginTitle(context),
+                    Text(
+                      'Connectez-vous',
+                      style: const TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     MyTextfield(
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: const Icon(Icons.email),
                       hintText: 'Email',
                       controller: emailController,
                       validator: emailValidator,
                     ),
                     const SizedBox(height: 15),
                     MyTextfield(
-                      prefixIcon: Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock),
                       hintText: 'Mot de passe',
                       controller: passwordController,
                       validator: passwordValidator,
@@ -162,10 +119,31 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     state is AuthLoading
                         ? const Center(child: CircularProgressIndicator())
-                        : MyButton(onPressed: _login),
-
+                        : MyButton(onPressed: _login, text: 'Se connecter'),
                     const SizedBox(height: 20),
-                    _signupText(context),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(text: 'Pas de compte?  '),
+                          TextSpan(
+                            text: 'Cree un compte',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            recognizer:
+                                TapGestureRecognizer()
+                                  ..onTap = () {
+                                    context.read<AuthBloc>().add(
+                                      ResetAuthEvent(),
+                                    );
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => const SignupPage(),
+                                      ),
+                                    );
+                                  },
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -175,32 +153,4 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _loginTitle(BuildContext context) {
-  return Text(
-    'Connectez-vous',
-    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-  );
-}
-
-Widget _signupText(BuildContext context) {
-  return RichText(
-    text: TextSpan(
-      children: [
-        const TextSpan(text: 'Pas de compte?  '),
-        TextSpan(
-          text: 'Cree un compte',
-          style: TextStyle(fontWeight: FontWeight.bold),
-          recognizer:
-              TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => SignupPage()),
-                  );
-                },
-        ),
-      ],
-    ),
-  );
 }
