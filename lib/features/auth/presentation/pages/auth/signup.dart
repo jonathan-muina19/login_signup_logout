@@ -85,10 +85,10 @@ class SignupPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: MyScaffoldMessenger(
-                  title: 'Confirmation',
-                  message: 'Email de confirmation envoyer\nVerifier vos mails',
-                  color: Colors.blueAccent,
-                  icon: Icon(Icons.info_rounded)
+                title: 'Confirmation',
+                message: 'Email de confirmation envoyer\nVerifier vos mails',
+                color: Colors.blueAccent,
+                icon: Icon(Icons.info_rounded),
               ),
               elevation: 20,
               backgroundColor: AppColors.background,

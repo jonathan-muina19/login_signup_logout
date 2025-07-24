@@ -23,6 +23,7 @@ class MyTextfield extends StatelessWidget {
       decoration: InputDecoration(hintText: hintText, prefixIcon: prefixIcon),
       obscureText: obscureText,
       validator: validator,
+      keyboardType: null,
     );
   }
 }

@@ -10,7 +10,7 @@ import 'package:login_signup_app/features/auth/presentation/pages/auth/signup.da
 import 'package:login_signup_app/features/auth/presentation/pages/home/home_screen.dart';
 import '../../../../../core/configs/widget/scaffoldMessenger/scaffold_messenger.dart';
 import '../../bloc/auth/auth_bloc.dart';
-import 'email_not_verified.dart';
+import '../email_not_verified/email_not_verified.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content:MyScaffoldMessenger(
+                    content: MyScaffoldMessenger(
                       title: 'Erreur',
                       message: state.message,
                       color: Colors.red,
@@ -70,7 +70,7 @@ class LoginScreen extends StatelessWidget {
             } else if (state is AuthSuccess) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content:MyScaffoldMessenger(
+                  content: MyScaffoldMessenger(
                     title: 'Succes',
                     message: 'Connexion reussie',
                     color: Colors.green,

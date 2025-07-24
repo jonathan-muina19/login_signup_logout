@@ -21,6 +21,8 @@ class EmailVerificationSent extends AuthState {}
 /// Evenement de type email non vérifié
 class AuthEmailNotVerified extends AuthState {}
 
+/// Evenement de type email vérifié
+class AuthEmailVerified extends AuthState {}
 
 /// Evenement de type échec
 class AuthFailure extends AuthState {

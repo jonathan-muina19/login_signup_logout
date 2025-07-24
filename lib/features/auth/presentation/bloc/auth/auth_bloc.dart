@@ -122,5 +122,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    on<CheckEmailVerified>((event, emit) async {
+      emit(AuthLoading());
+      await Future.delayed(const Duration(seconds: 2));
+      try {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null && !user.emailVerified) {
+          emit(AuthEmailNotVerified());
+        } else {
+          emit(AuthEmailVerified());
+        }
+      } on FirebaseAuthException catch (e) {
+        String message;
+        switch (e.code) {
+          case 'user-not-found':
+            message = 'Utilisateur non trouvé';
+            break;
+          case 'invalid-email':
+            message = 'Email invalide';
+            break;
+          default:
+            message = 'Pas de connexion internet,\nessayez plus tard';
+        }
+        emit(AuthFailure(message));
+      } catch (e) {
+        emit(AuthFailure(e.toString()));
+      }
+    });
   }
 }

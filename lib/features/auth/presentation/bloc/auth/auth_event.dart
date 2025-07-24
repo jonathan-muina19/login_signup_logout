@@ -38,7 +38,10 @@ class SignUpRequested extends AuthEvent {
 /// Evenement de type déconnexion
 class SignOutRequested extends AuthEvent {}
 
-/// Evenement de type vérification de l'état d'authentification
+/// Evenement de type vérification de l'état de l'utilisateur
 class CheckAuthStatus extends AuthEvent {}
 
 class ResetAuthEvent extends AuthEvent {}
+
+/// Evenement de type vérification de l'état de l'email
+class CheckEmailVerified extends AuthEvent {}
