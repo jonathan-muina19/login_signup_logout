@@ -49,7 +49,10 @@ class EmailNotVerifiedPage extends StatelessWidget {
                   title: 'Succes',
                   message: 'Connexion reussie\nVotre email est verifier',
                   color: Colors.green,
-                  icon: Icon(Icons.check_circle_outline))
+                  icon: Icon(Icons.check_circle_outline)
+                ),
+                elevation: 20,
+                backgroundColor: AppColors.background,
               )
             );
             Navigator.of(context).pushReplacement(
