@@ -122,12 +122,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+
+    //
     on<CheckEmailVerified>((event, emit) async {
       emit(AuthLoading());
       await Future.delayed(const Duration(seconds: 2));
       try {
         final user = FirebaseAuth.instance.currentUser;
-        //
         await user?.reload();
         final refreshedUser = FirebaseAuth.instance.currentUser;
         if (refreshedUser != null && refreshedUser.emailVerified) {

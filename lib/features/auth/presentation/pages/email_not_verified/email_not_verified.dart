@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_signup_app/core/configs/widget/button/my_button.dart';
 import 'package:login_signup_app/features/auth/presentation/pages/auth/signup.dart';
-
 import '../../../../../core/configs/theme/app_color.dart';
 import '../../../../../core/configs/widget/scaffoldMessenger/scaffold_messenger.dart';
 import '../../bloc/auth/auth_bloc.dart';
@@ -168,7 +167,7 @@ class EmailNotVerifiedPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          //Icon(Icons.keyboard_backspace, color: Colors.white, size: 16),
+                          Icon(Icons.login_rounded, color: Colors.white, size: 16),
                           const SizedBox(width: 6),
                           Text(
                             'Se reconnecter',
@@ -184,7 +183,9 @@ class EmailNotVerifiedPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   state is AuthLoading ? Center(
-                      child: const CircularProgressIndicator()
+                      child: const CircularProgressIndicator(
+                        color: Colors.red,
+                      )
                   ) : SizedBox(
                     height: 50,
                     width: 200, // Ajuste cette largeur selon ce que tu veux
@@ -208,7 +209,7 @@ class EmailNotVerifiedPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.check, color: Colors.white, size: 16),
+                          Icon(Icons.check_circle_rounded, color: Colors.white, size: 16),
                           const SizedBox(width: 6),
                           Text(
                             'J\'ai vérifié',
